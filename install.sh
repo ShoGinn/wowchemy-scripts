@@ -26,30 +26,6 @@ set -o pipefail
 # Turn on traces, useful while debugging but commented out by default
 # set -o xtrace
 
-if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
-    __i_am_main_script="0" # false
-
-    if [[ "${__usage+x}" ]]; then
-        if [[ "${BASH_SOURCE[1]}" = "${0}" ]]; then
-            __i_am_main_script="1" # true
-        fi
-
-        __b3bp_external_usage="true"
-        __b3bp_tmp_source_idx=1
-    fi
-else
-    __i_am_main_script="1" # true
-    [[ "${__usage+x}" ]] && unset -v __usage
-    [[ "${__helptext+x}" ]] && unset -v __helptext
-fi
-
-# Set magic variables for current file, directory, os, etc.
-__dir="$(cd "$(dirname "${BASH_SOURCE[${__b3bp_tmp_source_idx:-0}]}")" && pwd)"
-__file="${__dir}/$(basename "${BASH_SOURCE[${__b3bp_tmp_source_idx:-0}]}")"
-__base="$(basename "${__file}" .sh)"
-# shellcheck disable=SC2034,SC2015
-__invocation="$(printf %q "${__file}")$( (($#)) && printf ' %q' "$@" || true)"
-
 # Define the environment variables (and their defaults) that this script depends on
 LOG_LEVEL="${LOG_LEVEL:-6}" # 7 = debug -> 0 = emergency
 NO_COLOR="${NO_COLOR:-}"    # true = disable color. otherwise autodetected
@@ -369,13 +345,6 @@ function __b3bp_cleanup_before_exit() {
     info "Cleaning up. Done"
 }
 trap __b3bp_cleanup_before_exit EXIT
-
-# requires `set -o errtrace`
-__b3bp_err_report() {
-    local error_code=${?}
-    error "Error in ${__file} in function ${1} on line ${2}"
-    exit ${error_code}
-}
 
 function required_tools() {
     if [[ -n ${REQUIRED_TOOLS[0]+x} ]]; then
