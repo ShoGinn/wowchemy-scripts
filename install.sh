@@ -454,3 +454,4 @@ if [[ "${arg_h:?}" = "1" ]]; then
     # Help exists with code 1
     help "Help using ${0}"
 fi
+__run_script
