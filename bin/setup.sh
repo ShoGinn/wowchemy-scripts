@@ -20,10 +20,10 @@ function add_package_scripts() {
     _add_packages
     info "Setting up the npm scripts!"
     npm pkg set scripts.clean:hugo="rimraf hugo{.log,_stats.json} resources public assets/jsconfig.json .hugo_build.lock _vendor"
-    npm pkg set scripts.serve="run-p serve:hugo"
-    npm pkg set scripts.start:hugo="./bin/build/hugo.sh"
-    npm pkg set scripts.serve:hugo="cross-env SHOGINN_SCRIPTS_SERVE_HUGO=1 run-p start:hugo"
-    npm pkg set scripts.build:hugo="cross-env SHOGINN_SCRIPTS_BUILD_HUGO=1 run-s clean:hugo start:hugo"
+    npm pkg set scripts.serve="run-s serve:hugo"
+    npm pkg set scripts._start:_hugo="./bin/build/hugo.sh"
+    npm pkg set scripts.serve:hugo="cross-env SHOGINN_SCRIPTS_SERVE_HUGO=1 run-s _start:_hugo"
+    npm pkg set scripts.build:hugo="cross-env SHOGINN_SCRIPTS_BUILD_HUGO=1 run-s clean:hugo _start:_hugo"
 }
 
 if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
