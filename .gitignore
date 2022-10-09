@@ -205,3 +205,4 @@ dist
 
 package*
 .replacements
+test

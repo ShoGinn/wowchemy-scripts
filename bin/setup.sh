@@ -16,11 +16,20 @@ function _add_packages() {
         npm install "$__item" --save-dev >>/dev/null
     done
 }
+function _copy_netlify_toml() {
+    if [[ -e ./netlify.toml ]]; then
+        mv ./netlify.toml ./netlify.bak
+    fi
+    cp bin/etc/.netlify.template ./netlify.toml
+    bin/netlify/update_hugo_version.sh ./netlify.toml
+}
 function add_package_scripts() {
     _add_packages
+    _copy_netlify_toml
     info "Setting up the npm scripts!"
     npm pkg set scripts.clean:hugo="rimraf hugo{.log,_stats.json} resources public assets/jsconfig.json .hugo_build.lock _vendor"
     npm pkg set scripts.serve="run-s serve:hugo"
+    npm pkg set scripts.build="run-s build:hugo"
     npm pkg set scripts._start:_hugo="./bin/build/hugo.sh"
     npm pkg set scripts.serve:hugo="cross-env SHOGINN_SCRIPTS_SERVE_HUGO=1 run-s _start:_hugo"
     npm pkg set scripts.build:hugo="cross-env SHOGINN_SCRIPTS_BUILD_HUGO=1 run-s clean:hugo _start:_hugo"

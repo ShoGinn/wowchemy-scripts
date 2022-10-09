@@ -7,6 +7,11 @@ source "${__dir}"/../functions/core.sh
 if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
     info "Updating the Netlify TOML with the latest HUGO verion"
 else
-    update_netlify "${1}"
+    if [[ ! ${1:-} ]]; then
+        error "Specify the Netlify.toml file location"
+        exit 1
+    else
+        update_netlify "${1:-}"
+    fi
     exit ${?}
 fi
