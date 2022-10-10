@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/ShoGinn/wowchemy-scripts/compare/v1.2.0...v1.3.0) (2022-10-10)
+
+
+### Features
+
+* added auto install ([a756675](https://github.com/ShoGinn/wowchemy-scripts/commit/a7566755852942d4c8a04a700f348ae60b52f5b0))
+
 ## [1.2.0](https://github.com/ShoGinn/wowchemy-scripts/compare/v1.1.0...v1.2.0) (2022-10-10)
 
 
