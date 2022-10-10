@@ -1,34 +1,15 @@
 #!/usr/bin/env bash
-# This file:
-#
-#  - Demos BASH3 Boilerplate (change this for your script)
-#
-# Usage:
-#
-#  LOG_LEVEL=7 ./main.sh -f /tmp/x -d (change this for your script)
-#
-# Based on a template by BASH3 Boilerplate v2.4.1
-# http://bash3boilerplate.sh/#authors
-#
-# The MIT License (MIT)
-# Copyright (c) 2013 Kevin van Zonneveld and contributors
-# You are not obligated to bundle the LICENSE file with your b3bp projects as long
-# as you leave these references intact in the header comments of your source files.
 
-# Exit on error. Append "|| true" if you expect an error.
 set -o errexit
-# Exit on error inside any functions or subshells.
 set -o errtrace
-# Do not allow use of undefined vars. Use ${VAR:-} to use an undefined VAR
 set -o nounset
-# Catch the error in case mysqldump fails (but gzip succeeds) in `mysqldump |gzip`
 set -o pipefail
-# Turn on traces, useful while debugging but commented out by default
-# set -o xtrace
 
-# Define the environment variables (and their defaults) that this script depends on
 LOG_LEVEL="${LOG_LEVEL:-6}" # 7 = debug -> 0 = emergency
 NO_COLOR="${NO_COLOR:-}"    # true = disable color. otherwise autodetected
+__GIT_NAME="https://github.com/ShoGinn/wowchemy-scripts/raw/main/src/"
+__DESTINATION_FOLDER="shoginn_scripts/"
+__SETUP_FILE="${PWD}/${__DESTINATION_FOLDER}bin/setup.sh"
 
 ### Functions
 ##############################################################################
@@ -108,28 +89,12 @@ function debug() {
     true
 }
 
-function help() {
-    echo "" 1>&2
-    echo " ${*}" 1>&2
-    echo "" 1>&2
-    echo "  ${__usage:-No usage available}" 1>&2
-    echo "" 1>&2
-
-    if [[ "${__helptext:-}" ]]; then
-        echo " ${__helptext}" 1>&2
-        echo "" 1>&2
-    fi
-
-    exit 1
-}
-
 ### Signal trapping and backtracing
 ##############################################################################
-
-function __b3bp_cleanup_before_exit() {
-    info "Cleaning up. Done"
-}
-trap __b3bp_cleanup_before_exit EXIT
+if [[ "${TEST:-}" ]]; then
+    LOG_LEVEL=7
+    notice "Running in Test Mode (Local)"
+fi
 
 function required_tools() {
     if [[ -n ${REQUIRED_TOOLS[0]+x} ]]; then
@@ -138,8 +103,7 @@ function required_tools() {
         fi
         for __tool in "${REQUIRED_TOOLS[@]}"; do
             if ! command -v "${__tool}" >/dev/null; then
-                warning "${__tool} is required... "
-                exit 1
+                emergency "${__tool} is required... "
             fi
         done
     fi
@@ -150,6 +114,7 @@ REQUIRED_TOOLS=(
     grep
 )
 required_tools "Install Scripts"
+
 ### Validation. Error out if the things required for your script are not present
 ##############################################################################
 
@@ -162,22 +127,23 @@ __copy_file() {
     __temp_destination_name="${2}"
     debug "Checking if ${__temp_file_name} exists and copying to ${__temp_destination_name}"
     if [[ -e $__temp_file_name ]]; then
-        cp "${__temp_file_name}" ./"${__temp_destination_name}"
+        cp "${__temp_file_name}" "${__temp_destination_name}"
     else
-        error "Could not find $__temp_file_name"
-        exit 1
+        emergency "Could not find $__temp_file_name"
     fi
 
 }
-__download_file() {
-    __output_dir="${2}"
-    debug "Downloading ${1} to ${__output_dir}"
-    curl -fsSL "${1}" --output ./"${2}"
+__get_file() {
+    if [[ "${TEST:-}" ]]; then
+        __copy_file src/"${1}" "${2}"
+    else
+        debug "Downloading ${1} to ${2}"
+        curl -fsSL "${__GIT_NAME}""${1}" --output "${2}"
+    fi
 
 }
 __run_script() {
     # Create a temporary directory and store its name in a variable.
-    __git_name="https://github.com/ShoGinn/wowchemy-scripts/raw/main/"
     __make_dirs=(
         bin/build
         bin/etc
@@ -191,41 +157,33 @@ __run_script() {
         bin/etc/.env.sample
         bin/etc/.replacements.template
         bin/etc/.netlify.template
-        bin/functions/core.sh
-        bin/functions/hugo.sh
-        bin/functions/main.sh
+        bin/functions/shoginn_scripts.sh
         bin/netlify/update_hugo_version.sh
+        .github/workflows/update_netlify.yml
+        .github/workflows/html_proof.yml
+        .github/workflows/release.yml
     )
     # Make the directories
     for __script_dir in "${__make_dirs[@]}"; do
-        mkdir -p "${__script_dir}"
+        mkdir -p "${__DESTINATION_FOLDER}""${__script_dir}"
     done
     # Copy the Files
     for __script_file in "${__copy_files[@]}"; do
-        __remote_file="${__git_name}""${__script_file}"
-        __download_file "${__remote_file}" "${__script_file}"
+        __get_file "${__script_file}" "${__DESTINATION_FOLDER}""${__script_file}"
         ext="${__script_file##*.}"
         if [[ $ext == "sh" ]]; then
-            # __destination_file=./"${__script_file}"
-            chmod +x "${__script_file}"
+            chmod +x "${__DESTINATION_FOLDER}""${__script_file}"
         fi
     done
-    __workflow_files=(
-        workflows/update_netlify.yml
-        workflows/html_proof.yml
-        workflows/release.yml
-    )
-    # Install the Github Workflows
-    for __workflow_file in "${__workflow_files[@]}"; do
-        __remote_file="${__git_name}""${__workflow_file}"
-        __download_file "${__remote_file}" .github/"${__workflow_file}"
+    mkdir -p .github/workflows
+    for __file in "${__DESTINATION_FOLDER}"/.github/workflows/*; do
+        __copy_file "${__file}" .github/workflows
     done
-
     info "Scripts are installed!"
-    notice "To Fully install the script you must run: ${PWD}/bin/setup.sh"
+    notice "To Fully install the script you must run: ${__SETUP_FILE}"
     warning "Automatically installing the script in 5 seconds!!!"
     sleep 5
-    "${PWD}/bin/setup.sh"
+    "${__SETUP_FILE}"
 }
 
 __run_script
