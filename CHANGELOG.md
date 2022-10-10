@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/ShoGinn/wowchemy-scripts/compare/v1.3.0...v2.0.0) (2022-10-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* changed the entire script structure
+
+### Code Refactoring
+
+* changed the entire script structure ([1305fb2](https://github.com/ShoGinn/wowchemy-scripts/commit/1305fb2c52ac5e29ce4f6e7135f6c53f4432342c))
+
 ## [1.3.0](https://github.com/ShoGinn/wowchemy-scripts/compare/v1.2.0...v1.3.0) (2022-10-10)
 
 
