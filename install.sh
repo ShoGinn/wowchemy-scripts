@@ -222,7 +222,10 @@ __run_script() {
     done
 
     info "Scripts are installed!"
-    notice "Please run the install script ${PWD}/bin/setup.sh"
+    notice "To Fully install the script you must run: ${PWD}/bin/setup.sh"
+    warning "Automatically installing the script in 5 seconds!!!"
+    sleep 5
+    "${PWD}/bin/setup.sh"
 }
 
 __run_script
