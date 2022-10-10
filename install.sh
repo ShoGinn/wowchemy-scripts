@@ -172,7 +172,7 @@ __copy_file() {
 __download_file() {
     __output_dir="${2}"
     debug "Downloading ${1} to ${__output_dir}"
-    curl --silent -LJ "${1}" --output ./"${2}"
+    curl -fsSL "${1}" --output ./"${2}"
 
 }
 __run_script() {
@@ -210,9 +210,16 @@ __run_script() {
             chmod +x "${__script_file}"
         fi
     done
-
-    # Install the Github Workflow
-    __download_file "${__git_name}"/workflows/update_netlify.yml .github/workflows/update_netlify.yml
+    __workflow_files=(
+        workflows/update_netlify.yml
+        workflows/html_proof.yml
+        workflows/release.yml
+    )
+    # Install the Github Workflows
+    for __workflow_file in "${__workflow_files[@]}"; do
+        __remote_file="${__git_name}""${__workflow_file}"
+        __download_file "${__remote_file}" .github/"${__workflow_file}"
+    done
 
     info "Scripts are installed!"
     notice "Please run the install script ${PWD}/bin/setup.sh"
