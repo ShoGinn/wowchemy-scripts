@@ -162,6 +162,7 @@ __run_script() {
         .github/workflows/update_netlify.yml
         .github/workflows/html_proof.yml
         .github/workflows/release.yml
+        .github/workflows/auto_update_shoginn_scripts.yml
     )
     # Make the directories
     for __script_dir in "${__make_dirs[@]}"; do
@@ -179,10 +180,12 @@ __run_script() {
     for __file in "${__DESTINATION_FOLDER}"/.github/workflows/*; do
         __copy_file "${__file}" .github/workflows
     done
-    info "Scripts are installed!"
-    notice "To Fully install the script you must run: ${__SETUP_FILE}"
-    warning "Automatically installing the script in 5 seconds!!!"
-    sleep 5
+    if [[ ! "${SHOGINN_SCRIPTS_NO_PAUSE}" ]]; then
+        info "Scripts are installed!"
+        notice "To Fully install the script you must run: ${__SETUP_FILE}"
+        warning "Automatically installing the script in 5 seconds!!!"
+        sleep 5
+    fi
     "${__SETUP_FILE}"
 }
 
