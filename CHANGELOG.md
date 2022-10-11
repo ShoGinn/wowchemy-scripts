@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/ShoGinn/wowchemy-scripts/compare/v2.0.1...v2.1.0) (2022-10-11)
+
+
+### Features
+
+* added Auto Update Workflow ([3faa8a0](https://github.com/ShoGinn/wowchemy-scripts/commit/3faa8a0125082ee51de619e58f103733acf20b45))
+
 ## [2.0.1](https://github.com/ShoGinn/wowchemy-scripts/compare/v2.0.0...v2.0.1) (2022-10-11)
 
 
