@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.0.1](https://github.com/ShoGinn/wowchemy-scripts/compare/v2.0.0...v2.0.1) (2022-10-11)
+
+
+### Bug Fixes
+
+* forgot to add a slash to the script link ([775932e](https://github.com/ShoGinn/wowchemy-scripts/commit/775932eabf07f30ec840e29d4137e239d7ef6705))
+* updated netlify update workflow ([2311fb8](https://github.com/ShoGinn/wowchemy-scripts/commit/2311fb81ed7879608c56f08d890098fdc74de51b))
+
 ## [2.0.0](https://github.com/ShoGinn/wowchemy-scripts/compare/v1.3.0...v2.0.0) (2022-10-10)
 
 
