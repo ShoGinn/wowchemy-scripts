@@ -180,7 +180,7 @@ __run_script() {
     for __file in "${__DESTINATION_FOLDER}"/.github/workflows/*; do
         __copy_file "${__file}" .github/workflows
     done
-    if [[ ! "${SHOGINN_SCRIPTS_NO_PAUSE}" ]]; then
+    if [[ ! "${SHOGINN_SCRIPTS_NO_PAUSE:-}" ]]; then
         info "Scripts are installed!"
         notice "To Fully install the script you must run: ${__SETUP_FILE}"
         warning "Automatically installing the script in 5 seconds!!!"
