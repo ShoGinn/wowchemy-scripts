@@ -176,10 +176,16 @@ __run_script() {
             chmod +x "${__DESTINATION_FOLDER}""${__script_file}"
         fi
     done
-    mkdir -p .github/workflows
-    for __file in "${__DESTINATION_FOLDER}"/.github/workflows/*; do
-        __copy_file "${__file}" .github/workflows
-    done
+    if [[ "${TEST:-}" ]]; then
+        debug "Test Mode No workflows!"
+    else
+        mkdir -p .github/workflows
+        for __file in "${__DESTINATION_FOLDER}"/.github/workflows/*; do
+            __copy_file "${__file}" .github/workflows
+            rm "${__file}"
+        done
+    fi
+    rm -rf "${__DESTINATION_FOLDER}"/.github
     if [[ ! "${SHOGINN_SCRIPTS_NO_PAUSE:-}" ]]; then
         info "Scripts are installed!"
         notice "To Fully install the script you must run: ${__SETUP_FILE}"

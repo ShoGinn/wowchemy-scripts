@@ -4,7 +4,8 @@ on:
   workflow_dispatch:
   schedule:
     - cron: 0 0 * * *
-env: SHOGINN_SCRIPTS_NO_PAUSE: true
+env:
+  SHOGINN_SCRIPTS_NO_PAUSE: true
 jobs:
   build:
     name: Auto Update ShoGinn Scripts

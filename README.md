@@ -24,11 +24,6 @@ The folder structure is as follows:
 
 ```generic
 📦shoginn_scripts
- ┣ 📂.github
- ┃ ┗ 📂workflows
- ┃ ┃ ┣ 📜html_proof.yml
- ┃ ┃ ┣ 📜release.yml
- ┃ ┃ ┗ 📜update_netlify.yml
  ┗ 📂bin
  ┃ ┣ 📂build
  ┃ ┃ ┗ 📜hugo.sh
