@@ -148,7 +148,6 @@ __run_script() {
         bin/build
         bin/etc
         bin/functions
-        bin/netlify
         .github/workflows
     )
     __copy_files=(
@@ -158,7 +157,6 @@ __run_script() {
         bin/etc/.replacements.template
         bin/etc/.netlify.template
         bin/functions/shoginn_scripts.sh
-        bin/netlify/update_hugo_version.sh
         .github/workflows/update_netlify.yml
         .github/workflows/html_proof.yml
         .github/workflows/release.yml
