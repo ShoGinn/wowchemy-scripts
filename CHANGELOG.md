@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.1](https://github.com/ShoGinn/wowchemy-scripts/compare/v2.2.0...v2.2.1) (2022-10-13)
+
+
+### Bug Fixes
+
+* **workflow:** Wrong Action ([710f015](https://github.com/ShoGinn/wowchemy-scripts/commit/710f015ec8afe9b747b665a298274233e44de34e))
+
 ## [2.2.0](https://github.com/ShoGinn/wowchemy-scripts/compare/v2.1.0...v2.2.0) (2022-10-13)
 
 
