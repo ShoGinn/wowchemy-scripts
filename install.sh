@@ -142,6 +142,39 @@ __get_file() {
     fi
 
 }
+function update_netlify() {
+    __internal_tool=1
+    local REQUIRED_TOOLS=(
+        curl
+        sed
+        grep
+    )
+    if [ ! -f "${__NETLIFY_TOML}" ]; then
+        debug "Could not find file using arg"
+        __NETLIFY_TOML="${1}"
+    fi
+    required_tools "Update Netlify TOML"
+    function __get_latest_release() {
+        curl --silent "https://api.github.com/repos/gohugoio/hugo/releases/latest" |
+            grep '"tag_name":' |
+            sed -E 's/.*"v([^"]+)".*/\1/'
+    }
+    info "Attempting to get latest Hugo version from the gohugio repo..."
+    __latest_version=$(__get_latest_release)
+    info "Latest Hugo version is ${__latest_version}"
+    # - Update Netlify.toml with required Hugo version
+    if [ -f "${__NETLIFY_TOML}" ]; then
+        __current_version=$(sed <"${__NETLIFY_TOML}" -n 's/^HUGO_VERSION = //p' | tr -d "\"")
+        info "Current Netlify Hugo version configured is ${__current_version}"
+        if [ "$__current_version" != "$__latest_version" ]; then
+            info "Updating the netlify.toml to the latest Hugo version ${__latest_version}."
+            sed -i.bak -e "s/HUGO_VERSION = .*/HUGO_VERSION = \"$__latest_version\"/g" "${__NETLIFY_TOML}" && rm -f "${__NETLIFY_TOML}".bak
+        fi
+    else
+        warning "Could not check your netlify config because you dont have a netlify config"
+    fi
+}
+
 __run_script() {
     # Create a temporary directory and store its name in a variable.
     __make_dirs=(
