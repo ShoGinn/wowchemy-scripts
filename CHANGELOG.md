@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.0](https://github.com/ShoGinn/wowchemy-scripts/compare/v2.1.0...v2.2.0) (2022-10-13)
+
+
+### Features
+
+* moved update hugo version to action ([de68c3c](https://github.com/ShoGinn/wowchemy-scripts/commit/de68c3ceec1e011e05809758b49e3e7f7cb51798))
+
 ## [2.1.0](https://github.com/ShoGinn/wowchemy-scripts/compare/v2.0.1...v2.1.0) (2022-10-11)
 
 
