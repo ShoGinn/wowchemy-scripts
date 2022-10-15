@@ -118,7 +118,7 @@ REQUIRED_TOOLS=(
 required_tools "Install Scripts"
 
 if [[ "${TEST:-}" ]]; then
-    __GIT_TEMP_DIR=.
+    __GIT_TEMP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 else
     __GIT_TEMP_DIR="$(mktemp -d)"
     function __b3bp_cleanup_before_exit() {
@@ -148,7 +148,7 @@ __git_clone() {
 __run_script() {
     # Create a temporary directory and store its name in a variable.
     # Copy the Files
-    if [[ ! "${TEST}" ]]; then
+    if [[ ! "${TEST:-}" ]]; then
         __git_clone
     fi
     if [[ -d "${__GIT_TEMP_DIR:-}" ]]; then
