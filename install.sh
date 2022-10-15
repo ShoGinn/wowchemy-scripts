@@ -7,7 +7,7 @@ set -o pipefail
 
 LOG_LEVEL="${LOG_LEVEL:-6}" # 7 = debug -> 0 = emergency
 NO_COLOR="${NO_COLOR:-}"    # true = disable color. otherwise autodetected
-__GIT_NAME="https://github.com/ShoGinn/wowchemy-scripts/raw/main/src/"
+__GIT_NAME="https://github.com/ShoGinn/wowchemy-scripts"
 __DESTINATION_FOLDER="shoginn_scripts/"
 __SETUP_FILE="${PWD}/${__DESTINATION_FOLDER}bin/setup.sh"
 
@@ -112,8 +112,25 @@ REQUIRED_TOOLS=(
     curl
     sed
     grep
+    git
+    mktemp
 )
 required_tools "Install Scripts"
+
+if [[ "${TEST:-}" ]]; then
+    __GIT_TEMP_DIR=.
+else
+    __GIT_TEMP_DIR="$(mktemp -d)"
+    function __b3bp_cleanup_before_exit() {
+        if [[ -d "${__GIT_TEMP_DIR}" ]]; then
+            debug "Deleting ${__GIT_TEMP_DIR}"
+            rm -rf "${__GIT_TEMP_DIR}"
+        fi
+        info "Cleaning up. Done"
+    }
+    trap __b3bp_cleanup_before_exit EXIT
+
+fi
 
 ### Validation. Error out if the things required for your script are not present
 ##############################################################################
@@ -122,68 +139,29 @@ required_tools "Install Scripts"
 
 ### Runtime
 ##############################################################################
-__copy_file() {
-    __temp_file_name="${1}"
-    __temp_destination_name="${2}"
-    debug "Checking if ${__temp_file_name} exists and copying to ${__temp_destination_name}"
-    if [[ -e $__temp_file_name ]]; then
-        cp "${__temp_file_name}" "${__temp_destination_name}"
-    else
-        emergency "Could not find $__temp_file_name"
-    fi
 
-}
-__get_file() {
-    if [[ "${TEST:-}" ]]; then
-        __copy_file src/"${1}" "${2}"
-    else
-        debug "Downloading ${1} to ${2}"
-        curl -fsSL "${__GIT_NAME}""${1}" --output "${2}"
-    fi
-
+__git_clone() {
+    info "Cloning the Repo"
+    git clone -q ${__GIT_NAME%.git}.git "${__GIT_TEMP_DIR}"
+    git --git-dir="${__GIT_TEMP_DIR}"/.git -c advice.detachedHead=false checkout -q main
 }
 __run_script() {
     # Create a temporary directory and store its name in a variable.
-    __make_dirs=(
-        bin/build
-        bin/etc
-        bin/functions
-        .github/workflows
-    )
-    __copy_files=(
-        bin/setup.sh
-        bin/build/hugo.sh
-        bin/etc/.env.sample
-        bin/etc/.replacements.template
-        bin/etc/.netlify.template
-        bin/functions/shoginn_scripts.sh
-        .github/workflows/update_netlify.yml
-        .github/workflows/html_proof.yml
-        .github/workflows/release.yml
-        .github/workflows/auto_update_shoginn_scripts.yml
-    )
-    # Make the directories
-    for __script_dir in "${__make_dirs[@]}"; do
-        mkdir -p "${__DESTINATION_FOLDER}""${__script_dir}"
-    done
     # Copy the Files
-    for __script_file in "${__copy_files[@]}"; do
-        __get_file "${__script_file}" "${__DESTINATION_FOLDER}""${__script_file}"
-        ext="${__script_file##*.}"
-        if [[ $ext == "sh" ]]; then
-            chmod +x "${__DESTINATION_FOLDER}""${__script_file}"
-        fi
-    done
-    if [[ "${TEST:-}" || "${CI:-}" ]]; then
-        debug "Test Mode or CI No workflows!"
-    else
-        mkdir -p .github/workflows
-        for __file in "${__DESTINATION_FOLDER}"/.github/workflows/*; do
-            __copy_file "${__file}" .github/workflows
-            rm "${__file}"
-        done
+    if [[ ! "${TEST}" ]]; then
+        __git_clone
     fi
-    rm -rf "${__DESTINATION_FOLDER}"/.github
+    if [[ -d "${__GIT_TEMP_DIR:-}" ]]; then
+        mkdir -p "${__DESTINATION_FOLDER}"
+        cp -R "${__GIT_TEMP_DIR}"/src/bin "${__DESTINATION_FOLDER}"
+    else
+        emergency "Temp Dir does not exist! Report this!"
+    fi
+    if [[ "${CI:-}" ]]; then
+        debug "CI no workflows!"
+    else
+        cp -R "${__GIT_TEMP_DIR}"/src/.github ./
+    fi
     if [[ ! "${CI:-}" ]]; then
         info "Scripts are installed!"
         notice "************************************************************"
