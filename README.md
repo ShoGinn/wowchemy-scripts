@@ -49,3 +49,7 @@ The setup file uses `NODE` (npm) and creates some shortcuts necessary to build y
 ### What are the workflows?
 
 The Workflows are there to prove the HTML from your build and if that passes then checks your git commits using the Google release-please action to create a version automatically
+
+> WARNING: **THEY ARE NOT AUTOMATICALLY UPDATED!**
+
+If this is an important feature please check the release notes.

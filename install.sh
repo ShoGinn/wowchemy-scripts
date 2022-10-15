@@ -174,8 +174,8 @@ __run_script() {
             chmod +x "${__DESTINATION_FOLDER}""${__script_file}"
         fi
     done
-    if [[ "${TEST:-}" ]]; then
-        debug "Test Mode No workflows!"
+    if [[ "${TEST:-}" || "${CI:-}" ]]; then
+        debug "Test Mode or CI No workflows!"
     else
         mkdir -p .github/workflows
         for __file in "${__DESTINATION_FOLDER}"/.github/workflows/*; do
@@ -184,8 +184,11 @@ __run_script() {
         done
     fi
     rm -rf "${__DESTINATION_FOLDER}"/.github
-    if [[ ! "${SHOGINN_SCRIPTS_NO_PAUSE:-}" ]]; then
+    if [[ ! "${CI:-}" ]]; then
         info "Scripts are installed!"
+        notice "************************************************************"
+        notice "Workflows are only installed initially and not auto-updated!"
+        notice "************************************************************"
         notice "To Fully install the script you must run: ${__SETUP_FILE}"
         warning "Automatically installing the script in 5 seconds!!!"
         sleep 5
