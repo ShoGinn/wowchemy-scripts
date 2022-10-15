@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.3.0](https://github.com/ShoGinn/wowchemy-scripts/compare/v2.2.2...v2.3.0) (2022-10-15)
+
+
+### Features
+
+* **install:** changed the entire install to git ([d02700f](https://github.com/ShoGinn/wowchemy-scripts/commit/d02700fc25ea703ce50d7aae6a73fc4be59826cb))
+* **workflow:** changed the name prefix ([cd89098](https://github.com/ShoGinn/wowchemy-scripts/commit/cd890985f86f5f05d30530218b508cefb7831365))
+
+
+### Bug Fixes
+
+* install had unset variable ([caca459](https://github.com/ShoGinn/wowchemy-scripts/commit/caca4593dc5ca94dbf89ffc4d62e616ef1816ad4))
+
 ## [2.2.2](https://github.com/ShoGinn/wowchemy-scripts/compare/v2.2.1...v2.2.2) (2022-10-15)
 
 
