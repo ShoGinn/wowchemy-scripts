@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.1](https://github.com/ShoGinn/wowchemy-scripts/compare/v2.3.0...v2.3.1) (2022-10-29)
+
+
+### Bug Fixes
+
+* update setup to not update netlify in ci/cd ([0276528](https://github.com/ShoGinn/wowchemy-scripts/commit/0276528a11bf32793ba76f3067e2dd938fb4af05))
+
 ## [2.3.0](https://github.com/ShoGinn/wowchemy-scripts/compare/v2.2.2...v2.3.0) (2022-10-15)
 
 
