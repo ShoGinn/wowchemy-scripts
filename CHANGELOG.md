@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.2](https://github.com/ShoGinn/wowchemy-scripts/compare/v2.3.1...v2.3.2) (2022-11-16)
+
+
+### Bug Fixes
+
+* update workflows to checkout v3 ([a0d2c85](https://github.com/ShoGinn/wowchemy-scripts/commit/a0d2c85b0cca20a7c1e53bf372ef23a01d2be7d7))
+
 ## [2.3.1](https://github.com/ShoGinn/wowchemy-scripts/compare/v2.3.0...v2.3.1) (2022-10-29)
 
 
