@@ -9,16 +9,3 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "daily"
-  - package-ecosystem: "gomod"
-    directory: "/" # Location of package manifests
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "npm"
-    directory: "/"
-    commit-message:
-      prefix: "fix"
-    rebase-strategy: "auto"
-    schedule:
-      interval: "daily"
-    allow:
-      - dependency-name: "release-please"
