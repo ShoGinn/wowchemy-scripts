@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.3](https://github.com/ShoGinn/wowchemy-scripts/compare/v2.3.2...v2.3.3) (2023-06-24)
+
+
+### Bug Fixes
+
+* clean up for latest hugo ver ([6191c34](https://github.com/ShoGinn/wowchemy-scripts/commit/6191c3453e572334bb30ac9751d2c82dd4210b5a))
+
 ## [2.3.2](https://github.com/ShoGinn/wowchemy-scripts/compare/v2.3.1...v2.3.2) (2022-11-16)
 
 
