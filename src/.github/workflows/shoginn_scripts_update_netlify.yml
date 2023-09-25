@@ -9,10 +9,10 @@ jobs:
   update_hugo_netlify:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Update Hugo Version for Netlify
         id: update-hugo-version-netlify
-        uses: ShoGinn/action-netlify-hugo-update@v1.0.0
+        uses: ShoGinn/action-netlify-hugo-update@v1
       - name: Create Pull Request
         id: createpr
         uses: peter-evans/create-pull-request@v5
@@ -31,5 +31,5 @@ jobs:
           delete-branch: true
       - name: Check outputs
         run: |
-         echo "Pull Request Number - ${{ steps.createpr.outputs.pull-request-number }}" >> $GITHUB_STEP_SUMMARY
-         echo "Pull Request URL - ${{ steps.createpr.outputs.pull-request-url }}" >> $GITHUB_STEP_SUMMARY
+          echo "Pull Request Number - ${{ steps.createpr.outputs.pull-request-number }}" >> $GITHUB_STEP_SUMMARY
+          echo "Pull Request URL - ${{ steps.createpr.outputs.pull-request-url }}" >> $GITHUB_STEP_SUMMARY
